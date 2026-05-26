@@ -1,7 +1,7 @@
 const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const emailService = require("../services/email.service");
-const accountModel = require("../models/account.model");
+// const accountModel = require("../models/account.model");
 async function userRegisterController(req, res) {
   const { name, email, password } = req.body;
   const isUserExist = await userModel.findOne({
@@ -41,7 +41,7 @@ async function userRegisterController(req, res) {
       email: user.email,
     },
       token,
-      account
+    
     
   });
   await emailService.sendRegistrationEmail(user.email, user.name);
@@ -85,7 +85,7 @@ async function userLoginController(req, res) {
       email: user.email,
     },
       token,
-   
+     
   });
 }
 

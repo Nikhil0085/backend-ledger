@@ -46,7 +46,97 @@ async function sendRegistrationEmail() {
 
 
 }
+async function sendTransactionEmail(to, transactionData) {
+  const { fromAccount, toAccount, amount, transactionId } = transactionData;
+
+  const subject = "Transaction Successful - Backend Ledger";
+
+  const text = `
+Hello User,
+
+Your transaction has been completed successfully.
+
+Transaction Details:
+- Transaction ID: ${transactionId}
+- From Account: ${fromAccount}
+- To Account: ${toAccount}
+- Amount: ₹${amount}
+
+Thank you for using Backend Ledger.
+`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px;">
+      <h2 style="color: green;">Transaction Successful ✅</h2>
+
+      <p>Your transaction has been completed successfully.</p>
+
+      <h3>Transaction Details:</h3>
+
+      <ul>
+        <li><strong>Transaction ID:</strong> ${transactionId}</li>
+        <li><strong>From Account:</strong> ${fromAccount}</li>
+        <li><strong>To Account:</strong> ${toAccount}</li>
+        <li><strong>Amount:</strong> ₹${amount}</li>
+      </ul>
+
+      <p>Thank you for using <strong>Backend Ledger</strong>.</p>
+    </div>
+  `;
+
+  await sendEmail(to, subject, text, html);
+}
+async function sendTransactionFailureEmail(to, transactionData) {
+  const { fromAccount, toAccount, amount, reason } = transactionData;
+
+  const subject = "Transaction Failed - Backend Ledger";
+
+  const text = `
+Hello User,
+
+Unfortunately, your transaction could not be completed.
+
+Transaction Details:
+- From Account: ${fromAccount}
+- To Account: ${toAccount}
+- Amount: ₹${amount}
+
+Reason:
+${reason}
+
+Please try again later.
+
+Thank you for using Backend Ledger.
+`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px;">
+      <h2 style="color: red;">Transaction Failed ❌</h2>
+
+      <p>Unfortunately, your transaction could not be completed.</p>
+
+      <h3>Transaction Details:</h3>
+
+      <ul>
+        <li><strong>From Account:</strong> ${fromAccount}</li>
+        <li><strong>To Account:</strong> ${toAccount}</li>
+        <li><strong>Amount:</strong> ₹${amount}</li>
+      </ul>
+
+      <h3>Reason:</h3>
+      <p>${reason}</p>
+
+      <p>Please try again later.</p>
+
+      <p>Thank you for using <strong>Backend Ledger</strong>.</p>
+    </div>
+  `;
+
+  await sendEmail(to, subject, text, html);
+}
 
 module.exports = {
-    sendRegistrationEmail
+  sendRegistrationEmail,
+  sendTransactionEmail,
+  sendTransactionFailureEmail
 }

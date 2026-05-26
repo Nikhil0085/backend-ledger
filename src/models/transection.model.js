@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const transectionSchema = new mongoose.Schema({
     fromAccount: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "account",
+        ref: "Account",
         required: [true, "Transection must me associated with a from acount"],
         index: true,
     },
     toAccount: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "account",
+        ref: "Account",
         required: [true, "Transection must me associated with a to account"],
         index: true,
     },
