@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 
-const transectionSchema = new mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
     fromAccount: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
-        required: [true, "Transection must me associated with a from acount"],
+        required: [true, "Transaction must me associated with a from acount"],
         index: true,
     },
     toAccount: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
-        required: [true, "Transection must me associated with a to account"],
+        required: [true, "Transaction must me associated with a to account"],
         index: true,
     },
     status:{
@@ -24,7 +24,7 @@ const transectionSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: [true, "amount is required to creating a transection"],
-        min:[0,"transection ammount cannot be negative"]
+        min:[0,"transaction ammount cannot be negative"]
         
     },
     idempotencyKey: {
@@ -37,5 +37,5 @@ const transectionSchema = new mongoose.Schema({
 },{
     timestamps:true
 })
-const transectionModel = mongoose.model("transection", transectionSchema)
-module.exports=transectionModel
+const transactionModel = mongoose.model("transaction", transactionSchema)
+module.exports=transactionModel
