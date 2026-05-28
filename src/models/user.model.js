@@ -26,9 +26,9 @@ const userSchema =new mongoose.Schema({
     },
     systemUser: {
         type: Boolean,
-        default: false,
+        default: true,
         immutable: true,
-        select:false
+        select:true
     }
 },{
     timestamps:true

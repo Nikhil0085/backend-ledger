@@ -1,18 +1,14 @@
-
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    type: "OAuth2",
     user: process.env.EMAIL_USER,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.REFRESH_TOKEN,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-// Verify the connection configuration
+// Verify transporter
 transporter.verify((error, success) => {
   if (error) {
     console.error("Error connecting to email server:", error);
@@ -21,31 +17,47 @@ transporter.verify((error, success) => {
   }
 });
 
-// Function to send email
+// Generic send email function
 const sendEmail = async (to, subject, text, html) => {
   try {
     const info = await transporter.sendMail({
-      from: `"Backend Ledger" <${process.env.EMAIL_USER}>`, // sender address
-      to, // list of receivers
-      subject, // Subject line
-      text, // plain text body
-      html, // html body
+      from: `"Backend Ledger" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      text,
+      html,
     });
 
-    console.log('Message sent: %s', info.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    console.log("Message sent:", info.messageId);
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
   }
 };
-async function sendRegistrationEmail() {
-    const subject = "Welcome to Backend Ledger!";
-    const text = "Thank you for registering with Backend Ledger. We're excited to have you on board!";
-    const html = "<p>Thank you for registering with <strong>Backend Ledger</strong>. We're excited to have you on board!</p>";
-    await sendEmail(process.env.EMAIL_USER, subject, text, html);
 
+// Registration Email
+async function sendRegistrationEmail(to) {
+  const subject = "Welcome to Backend Ledger!";
 
+  const text =
+    "Thank you for registering with Backend Ledger. We're excited to have you on board!";
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px;">
+      <h2>Welcome to Backend Ledger 🎉</h2>
+
+      <p>
+        Thank you for registering with
+        <strong>Backend Ledger</strong>.
+      </p>
+
+      <p>We're excited to have you on board!</p>
+    </div>
+  `;
+
+  await sendEmail(to, subject, text, html);
 }
+
+// Transaction Success Email
 async function sendTransactionEmail(to, transactionData) {
   const { fromAccount, toAccount, amount, transactionId } = transactionData;
 
@@ -80,12 +92,17 @@ Thank you for using Backend Ledger.
         <li><strong>Amount:</strong> ₹${amount}</li>
       </ul>
 
-      <p>Thank you for using <strong>Backend Ledger</strong>.</p>
+      <p>
+        Thank you for using
+        <strong>Backend Ledger</strong>.
+      </p>
     </div>
   `;
 
   await sendEmail(to, subject, text, html);
 }
+
+// Transaction Failure Email
 async function sendTransactionFailureEmail(to, transactionData) {
   const { fromAccount, toAccount, amount, reason } = transactionData;
 
@@ -111,9 +128,13 @@ Thank you for using Backend Ledger.
 
   const html = `
     <div style="font-family: Arial, sans-serif; padding: 20px;">
-      <h2 style="color: red;">Transaction Failed ❌</h2>
+      <h2 style="color: red;">
+        Transaction Failed ❌
+      </h2>
 
-      <p>Unfortunately, your transaction could not be completed.</p>
+      <p>
+        Unfortunately, your transaction could not be completed.
+      </p>
 
       <h3>Transaction Details:</h3>
 
@@ -124,11 +145,15 @@ Thank you for using Backend Ledger.
       </ul>
 
       <h3>Reason:</h3>
+
       <p>${reason}</p>
 
       <p>Please try again later.</p>
 
-      <p>Thank you for using <strong>Backend Ledger</strong>.</p>
+      <p>
+        Thank you for using
+        <strong>Backend Ledger</strong>.
+      </p>
     </div>
   `;
 
@@ -138,5 +163,5 @@ Thank you for using Backend Ledger.
 module.exports = {
   sendRegistrationEmail,
   sendTransactionEmail,
-  sendTransactionFailureEmail
-}
+  sendTransactionFailureEmail,
+};

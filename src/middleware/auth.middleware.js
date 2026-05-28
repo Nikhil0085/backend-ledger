@@ -56,7 +56,7 @@ async function authSystemUserMiddleware(req, res, next) {
       });
     }
 
-    // FIXED HERE
+    
     if (!user.systemUser) {
       return res.status(403).json({
         message: "forbidden access not a system user",

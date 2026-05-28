@@ -15,7 +15,7 @@ amount: {
     immutable:true
      
     },
-    transection: {
+    transaction: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "transection",
         required: [true, "transaction is required"],

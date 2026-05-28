@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(express.json());
 const authRoutes = require("./src/routes/auth.routes");
 const accountRouter = require("./src/routes/account.routes");
-const transactionRoutes = require("./src/routes/transaction.model");
+const transactionRoutes = require("./src/routes/transactionRoutes");
 
 app.use("/api/auth", authRoutes)
 app.use("/api/accounts", accountRouter)
