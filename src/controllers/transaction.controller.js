@@ -5,9 +5,9 @@ const mongoose = require("mongoose");
 
 async function createTransaction(req, res) {
   try {
-    const { toAccount, amount, idempotencyKey } = req.body;
+    const {fromAccount, toAccount, amount, idempotencyKey } = req.body;
 
-    const fromAccount = req.userId || (req.user && req.user._id);
+   
 
     if (!fromAccount || !toAccount || !amount || !idempotencyKey) {
       return res.status(400).json({
@@ -135,7 +135,10 @@ async function createInitialFundsTransaction(req, res) {
       userId: systemUserId,
       status: "active",
     });
-
+    
+console.log(fromUserAccount);
+console.log(toUserAccount);
+    
     if (!fromUserAccount) {
       return res.status(400).json({
         message: "system user account is not found",

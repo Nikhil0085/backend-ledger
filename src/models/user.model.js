@@ -7,7 +7,7 @@ const userSchema =new mongoose.Schema({
     type: String,
   },
   email: {
-    require:[true,"email is required"],
+    required:[true,"email is required"],
     type: [String, "email is required for creating a user"],
     trim: true,
     lowercase: true,
