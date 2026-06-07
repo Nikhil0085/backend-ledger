@@ -82,7 +82,7 @@ async function createTransaction(req, res) {
       type: "CREDIT",
     });
 
-    transaction.status = "COMPLETED";
+    transaction.status = "COMPLETED"; 
 
     await transaction.save();
 
